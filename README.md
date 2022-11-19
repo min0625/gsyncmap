@@ -1,5 +1,5 @@
 # Generic Sync Map
-[![GoDoc](https://pkg.go.dev/badge/github.com/gin-gonic/gin?status.svg)](https://pkg.go.dev/github.com/min0625/gsyncmap?tab=doc)
+[![Go Reference](https://pkg.go.dev/badge/github.com/min0625/gsyncmap.svg)](https://pkg.go.dev/github.com/min0625/gsyncmap)
 
 
 This Map is based on `generic` and `sync.Map`.
