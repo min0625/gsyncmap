@@ -48,3 +48,20 @@ func (m *Map[Key, Value]) LoadAndDelete(key Key) (value Value, loaded bool) {
 
 	return anyValue.(Value), loaded
 }
+
+func (m *Map[Key, Value]) CompareAndDelete(key Key, old Value) (deleted bool) {
+	return m.syncMap().CompareAndDelete(key, old)
+}
+
+func (m *Map[Key, Value]) CompareAndSwap(key Key, old, new Value) bool {
+	return m.syncMap().CompareAndSwap(key, old, new)
+}
+
+func (m *Map[Key, Value]) Swap(key Key, value Value) (previous Value, loaded bool) {
+	anyPrevious, loaded := m.syncMap().Swap(key, value)
+	if !loaded {
+		return zero[Value](), false
+	}
+
+	return anyPrevious.(Value), loaded
+}
