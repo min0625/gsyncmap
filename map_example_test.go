@@ -91,3 +91,56 @@ func ExampleMap_Range_break() {
 	// Output:
 	// 1
 }
+
+func ExampleMap_CompareAndDelete() {
+	var m gsyncmap.Map[string, string]
+
+	m.Store("k1", "v1")
+
+	fmt.Println(m.Load("k1"))
+	fmt.Println(m.CompareAndDelete("k1", "v2"))
+	fmt.Println(m.CompareAndDelete("k1", "v1"))
+	fmt.Println(m.Load("k1"))
+
+	// Output:
+	// v1 true
+	// false
+	// true
+	//  false
+}
+
+func ExampleMap_CompareAndSwap() {
+	var m gsyncmap.Map[string, string]
+
+	m.Store("k1", "a1")
+
+	fmt.Println(m.Load("k1"))
+	fmt.Println(m.CompareAndSwap("k1", "b1", "b2"))
+	fmt.Println(m.Load("k1"))
+	fmt.Println(m.CompareAndSwap("k1", "a1", "a2"))
+	fmt.Println(m.Load("k1"))
+
+	// Output:
+	// a1 true
+	// false
+	// a1 true
+	// true
+	// a2 true
+}
+
+func ExampleMap_Swap() {
+	var m gsyncmap.Map[string, string]
+
+	fmt.Println(m.Load("k1"))
+	fmt.Println(m.Swap("k1", "v1"))
+	fmt.Println(m.Load("k1"))
+	fmt.Println(m.Swap("k1", "v2"))
+	fmt.Println(m.Load("k1"))
+
+	// Output:
+	//  false
+	//  false
+	// v1 true
+	// v1 true
+	// v2 true
+}
