@@ -16,6 +16,10 @@ func (m *Map[Key, Value]) Store(key Key, value Value) {
 	m.syncMap().Store(key, value)
 }
 
+func (m *Map[Key, Value]) Clear() {
+	m.syncMap().Clear()
+}
+
 func (m *Map[Key, Value]) Load(key Key) (value Value, ok bool) {
 	anyValue, ok := m.syncMap().Load(key)
 	if !ok {

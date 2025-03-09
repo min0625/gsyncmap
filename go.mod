@@ -1,3 +1,3 @@
 module github.com/min0625/gsyncmap
 
-go 1.20
+go 1.23

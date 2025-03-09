@@ -144,3 +144,25 @@ func ExampleMap_Swap() {
 	// v1 true
 	// v2 true
 }
+
+func ExampleMap_Clear() {
+	var m gsyncmap.Map[string, string]
+
+	fmt.Println(m.Load("k1"))
+	fmt.Println(m.Load("k2"))
+	m.Store("k1", "v1")
+	m.Store("k2", "v2")
+	fmt.Println(m.Load("k1"))
+	fmt.Println(m.Load("k2"))
+	m.Clear()
+	fmt.Println(m.Load("k1"))
+	fmt.Println(m.Load("k2"))
+
+	// Output:
+	//  false
+	//  false
+	// v1 true
+	// v2 true
+	//  false
+	//  false
+}
