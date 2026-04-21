@@ -1,0 +1,101 @@
+# https://golangci-lint.run/docs/configuration/file/
+version: "2"
+
+run:
+  timeout: 5m
+
+issues:
+  new: true
+  whole-files: true
+  new-from-rev: HEAD~
+  max-same-issues: 50
+
+severity:
+  default: error
+  # rules:
+  #   - linters:
+  #       - dupl
+  #     severity: error
+
+formatters:
+  enable:
+    - gci
+    - gofmt
+    - gofumpt
+    - goimports
+    - golines
+    - swaggo
+  settings:
+    gofmt:
+      rewrite-rules:
+        - pattern: "interface{}"
+          replacement: "any"
+    gofumpt:
+      extra-rules: true
+  exclusions:
+    paths: []
+
+linters:
+  default: none
+  enable:
+    # Standard
+    - errcheck
+    - govet
+    - ineffassign
+    - staticcheck
+    - unused
+
+    # Additional
+    - bodyclose
+    - depguard
+    - errname
+    - errorlint
+    - gocognit
+    - goconst
+    - goheader
+    - gomodguard
+    - goprintffuncname
+    - gosec
+    - nakedret
+    - nilerr
+    - nilnil
+    - noctx
+    - nolintlint
+    - prealloc
+    - promlinter
+    - revive
+    - testifylint
+    - testpackage
+    - thelper
+    - usestdlibvars
+    - wastedassign
+    - wsl_v5
+
+  disable: []
+
+  settings:
+    depguard:
+      rules:
+        main:
+          deny:
+            - pkg: github.com/pkg/errors
+              desc: Should be replaced by standard lib errors package
+            - pkg: golang.org/x/exp/slices
+              desc: Should be replaced by standard lib slices package
+            - pkg: github.com/go-resty/resty$
+              desc: Use github.com/go-resty/resty/v2 instead
+            - pkg: github.com/aws/smithy-go/ptr$
+              desc: Use github.com/aws/aws-sdk-go-v2/aws instead
+    govet:
+      enable:
+        - nilness
+
+  # exclusions:
+  #   paths:
+  #     - (.+)_test\.go
+  #   rules:
+  #     - path: (.+)_test\.go
+  #       linters:
+  #         - dupl
+  #         - mnd
+  #         - lll

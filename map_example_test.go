@@ -81,7 +81,7 @@ func ExampleMap_Range_break() {
 
 	var cnt int
 
-	m.Range(func(key, value string) bool {
+	m.Range(func(_, _ string) bool {
 		cnt++
 		return false
 	})
@@ -92,8 +92,8 @@ func ExampleMap_Range_break() {
 	// 1
 }
 
-func ExampleMap_CompareAndDelete() {
-	var m gsyncmap.Map[string, string]
+func ExampleComparableMap_CompareAndDelete() {
+	var m gsyncmap.ComparableMap[string, string]
 
 	m.Store("k1", "v1")
 
@@ -109,8 +109,8 @@ func ExampleMap_CompareAndDelete() {
 	//  false
 }
 
-func ExampleMap_CompareAndSwap() {
-	var m gsyncmap.Map[string, string]
+func ExampleComparableMap_CompareAndSwap() {
+	var m gsyncmap.ComparableMap[string, string]
 
 	m.Store("k1", "a1")
 
