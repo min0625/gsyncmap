@@ -5,9 +5,7 @@ run:
   timeout: 5m
 
 issues:
-  new: true
   whole-files: true
-  new-from-rev: HEAD~
   max-same-issues: 50
 
 severity:

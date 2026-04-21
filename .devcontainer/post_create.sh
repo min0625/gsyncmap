@@ -9,5 +9,7 @@ mise trust .
 
 mise install
 
+mise exec -- go mod download
+
 mise exec -- go install -v golang.org/x/tools/gopls@latest
 mise exec -- go install -v github.com/go-delve/delve/cmd/dlv@latest

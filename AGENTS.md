@@ -26,7 +26,7 @@ make lint
 make fix
 # golangci-lint run -v --fix ./...
 
-# Run lint + test together
+# Run all checks
 make check
 ```
 
