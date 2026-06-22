@@ -1,6 +1,7 @@
 # Generic Sync Map
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/min0625/gsyncmap.svg)](https://pkg.go.dev/github.com/min0625/gsyncmap)
+[![codecov](https://codecov.io/gh/min0625/gsyncmap/branch/main/graph/badge.svg)](https://codecov.io/gh/min0625/gsyncmap)
 
 [English](./README.md) | **繁體中文**
 

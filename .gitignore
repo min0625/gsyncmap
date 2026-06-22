@@ -5,6 +5,10 @@
 go.work
 go.work.sum
 
+# coverage output
+coverage.out
+coverage.html
+
 # Local configuration files
 *.local.*
 *.local/
