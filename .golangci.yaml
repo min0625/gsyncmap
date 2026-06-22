@@ -10,10 +10,6 @@ issues:
 
 severity:
   default: error
-  # rules:
-  #   - linters:
-  #       - dupl
-  #     severity: error
 
 formatters:
   enable:
@@ -22,7 +18,7 @@ formatters:
     - gofumpt
     - goimports
     - golines
-    - swaggo
+
   settings:
     gofmt:
       rewrite-rules:
@@ -30,8 +26,8 @@ formatters:
           replacement: "any"
     gofumpt:
       extra-rules: true
-  exclusions:
-    paths: []
+    golines:
+      max-len: 120
 
 linters:
   default: none
@@ -45,33 +41,66 @@ linters:
 
     # Additional
     - bodyclose
+    - canonicalheader
+    - copyloopvar
     - depguard
+    - dupword
+    - durationcheck
+    - errchkjson
     - errname
     - errorlint
+    - exptostd
+    - fatcontext
+    - gocheckcompilerdirectives
     - gocognit
     - goconst
-    - goheader
-    - gomodguard
+    - gocritic
+    - gomodguard_v2
     - goprintffuncname
     - gosec
+    - intrange
+    - loggercheck
+    - mirror
+    - misspell
+    - modernize
+    - musttag
     - nakedret
+    - nestif
     - nilerr
+    - nilnesserr
     - nilnil
     - noctx
     - nolintlint
+    - nosprintfhostport
+    - perfsprint
     - prealloc
     - promlinter
+    - recvcheck
     - revive
+    - rowserrcheck
+    - sloglint
+    - spancheck
+    - sqlclosecheck
     - testifylint
     - testpackage
     - thelper
+    - unconvert
+    - unparam
     - usestdlibvars
+    - usetesting
     - wastedassign
+    - whitespace
     - wsl_v5
 
-  disable: []
-
   settings:
+    govet:
+      enable:
+        - nilness
+
+    modernize:
+      disable:
+        - omitzero
+
     depguard:
       rules:
         main:
@@ -84,16 +113,3 @@ linters:
               desc: Use github.com/go-resty/resty/v2 instead
             - pkg: github.com/aws/smithy-go/ptr$
               desc: Use github.com/aws/aws-sdk-go-v2/aws instead
-    govet:
-      enable:
-        - nilness
-
-  # exclusions:
-  #   paths:
-  #     - (.+)_test\.go
-  #   rules:
-  #     - path: (.+)_test\.go
-  #       linters:
-  #         - dupl
-  #         - mnd
-  #         - lll

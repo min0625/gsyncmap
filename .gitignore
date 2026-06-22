@@ -4,3 +4,8 @@
 # go work
 go.work
 go.work.sum
+
+# Local configuration files
+*.local.*
+*.local/
+*.local

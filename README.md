@@ -1,22 +1,40 @@
 # Generic Sync Map
+
 [![Go Reference](https://pkg.go.dev/badge/github.com/min0625/gsyncmap.svg)](https://pkg.go.dev/github.com/min0625/gsyncmap)
 
-A generic, type-safe wrapper around [`sync.Map`](https://pkg.go.dev/sync#Map).
+**English** | [繁體中文](./README.zh-TW.md)
+
+A generic, type-safe wrapper around [`sync.Map`](https://pkg.go.dev/sync#Map) for Go.
+
+## Features
+
+- **Type-safe** — keys and values are statically typed; no `any` casts at call sites.
+- **Zero-value ready** — the zero value is usable immediately, just like `sync.Map`.
+- **Familiar API** — mirrors the standard `sync.Map` method set.
+- **No dependencies** — built entirely on the standard library.
 
 ## Installation
+
 ```sh
 go get github.com/min0625/gsyncmap
 ```
 
+Requires Go 1.24 or later.
+
 ## Types
+
+| Type | Value constraint | `CompareAndDelete` / `CompareAndSwap` |
+|------|------------------|----------------------------------------|
+| [`Map[Key comparable, Value any]`](./map.go) | `any` | available but **deprecated** (may panic at runtime) |
+| [`ComparableMap[Key, Value comparable]`](./comparable_map.go) | `comparable` | safe, panic-free |
 
 ### `Map[Key comparable, Value any]`
 
 A generic concurrent map that accepts any value type. Suitable for most use cases.
 
-> **Note:** `CompareAndDelete` and `CompareAndSwap` are available on `Map` but deprecated.
-> They may panic at runtime if `Value` is not a comparable type (e.g. slice, map, func).
-> Use `ComparableMap` instead when these operations are needed.
+> **Note:** `CompareAndDelete` and `CompareAndSwap` are available on `Map` but
+> deprecated — they panic at runtime if `Value` is not comparable (e.g. slice,
+> map, func). Use `ComparableMap` when these operations are needed.
 
 ### `ComparableMap[Key, Value comparable]`
 
@@ -62,10 +80,15 @@ func main() {
 
 	m.Store("k1", "v1")
 	fmt.Println(m.CompareAndSwap("k1", "v1", "v2")) // true
-	fmt.Println(m.Load("k1"))                        // v2 true
+	fmt.Println(m.Load("k1"))                       // v2 true
 }
 ```
 
-## Examples
-See: [map_example_test.go](./map_example_test.go)
+## Documentation
 
+- API reference: [pkg.go.dev/github.com/min0625/gsyncmap](https://pkg.go.dev/github.com/min0625/gsyncmap)
+- Runnable examples: [map_example_test.go](./map_example_test.go)
+
+## License
+
+See [LICENSE](./LICENSE).

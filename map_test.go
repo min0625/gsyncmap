@@ -267,6 +267,56 @@ func TestMap_CompareAndSwap_Deprecated(t *testing.T) {
 	}
 }
 
+func TestMap_NonComparableValue(t *testing.T) {
+	t.Parallel()
+
+	// Map accepts non-comparable value types (e.g. slices) for every method
+	// except the deprecated CompareAndDelete/CompareAndSwap.
+	var m gsyncmap.Map[string, []int]
+
+	// Load absent key returns the zero value (nil slice) and false.
+	v, ok := m.Load("missing")
+	if ok || v != nil {
+		t.Fatalf("Load missing key: got (%v, %v), want (nil, false)", v, ok)
+	}
+
+	m.Store("k", []int{1, 2, 3})
+
+	v, ok = m.Load("k")
+	if !ok || len(v) != 3 || v[0] != 1 || v[1] != 2 || v[2] != 3 {
+		t.Fatalf("Load after Store: got (%v, %v), want ([1 2 3], true)", v, ok)
+	}
+
+	// LoadOrStore on an existing key returns the stored slice.
+	actual, loaded := m.LoadOrStore("k", []int{9})
+	if !loaded || len(actual) != 3 {
+		t.Fatalf("LoadOrStore existing: got (%v, %v), want ([1 2 3], true)", actual, loaded)
+	}
+
+	// Range visits the stored entry.
+	var visited int
+
+	m.Range(func(key string, value []int) bool {
+		visited++
+
+		if key != "k" || len(value) != 3 {
+			t.Errorf("Range: got (%q, %v), want (\"k\", [1 2 3])", key, value)
+		}
+
+		return true
+	})
+
+	if visited != 1 {
+		t.Fatalf("Range visited %d entries, want 1", visited)
+	}
+
+	m.Delete("k")
+
+	if _, ok := m.Load("k"); ok {
+		t.Fatal("key should be deleted")
+	}
+}
+
 // --- ComparableMap tests ---
 
 func TestComparableMap_BasicOperations(t *testing.T) {
@@ -369,6 +419,53 @@ func TestComparableMap_LoadOrStore(t *testing.T) {
 	actual, loaded = m.LoadOrStore(1, 99)
 	if !loaded || actual != 10 {
 		t.Fatalf("LoadOrStore existing: got (%v, %v), want (10, true)", actual, loaded)
+	}
+}
+
+func TestComparableMap_Swap(t *testing.T) {
+	t.Parallel()
+
+	var m gsyncmap.ComparableMap[string, int]
+
+	// Key absent: previous is zero, loaded=false.
+	prev, loaded := m.Swap("k", 1)
+	if loaded || prev != 0 {
+		t.Fatalf("Swap missing key: got (%v, %v), want (0, false)", prev, loaded)
+	}
+
+	// Key present: previous is old value, loaded=true.
+	prev, loaded = m.Swap("k", 2)
+	if !loaded || prev != 1 {
+		t.Fatalf("Swap existing key: got (%v, %v), want (1, true)", prev, loaded)
+	}
+
+	v, _ := m.Load("k")
+	if v != 2 {
+		t.Fatalf("Load after Swap: got %v, want 2", v)
+	}
+}
+
+func TestComparableMap_LoadAndDelete(t *testing.T) {
+	t.Parallel()
+
+	var m gsyncmap.ComparableMap[string, int]
+
+	// Key absent: returns zero value and false.
+	v, loaded := m.LoadAndDelete("missing")
+	if loaded || v != 0 {
+		t.Fatalf("LoadAndDelete missing: got (%v, %v), want (0, false)", v, loaded)
+	}
+
+	m.Store("k", 7)
+
+	v, loaded = m.LoadAndDelete("k")
+	if !loaded || v != 7 {
+		t.Fatalf("LoadAndDelete existing: got (%v, %v), want (7, true)", v, loaded)
+	}
+
+	_, ok := m.Load("k")
+	if ok {
+		t.Fatal("key should be absent after LoadAndDelete")
 	}
 }
 
