@@ -92,6 +92,27 @@ func ExampleMap_Range_break() {
 	// 1
 }
 
+func ExampleComparableMap() {
+	var m gsyncmap.ComparableMap[string, int]
+
+	m.Store("k1", 1)
+	fmt.Println(m.Load("k1"))
+
+	// CompareAndSwap and CompareAndDelete are panic-free because the value
+	// type is constrained to comparable.
+	fmt.Println(m.CompareAndSwap("k1", 1, 2))
+	fmt.Println(m.Load("k1"))
+	fmt.Println(m.CompareAndDelete("k1", 2))
+	fmt.Println(m.Load("k1"))
+
+	// Output:
+	// 1 true
+	// true
+	// 2 true
+	// true
+	// 0 false
+}
+
 func ExampleComparableMap_CompareAndDelete() {
 	var m gsyncmap.ComparableMap[string, string]
 
